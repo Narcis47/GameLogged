@@ -13,13 +13,12 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public boolean addGame(Integer rawgId){
-        if(gameRepository.findByRawgId(rawgId).isEmpty()){
-            Game game = Game.builder().rawgId(rawgId).build();
-            gameRepository.save(game);
-            return true;
-        }
-        return false;
+    public Game addGame(Integer rawgId){
+        return gameRepository.findByRawgId(rawgId)
+                .orElseGet(() -> {
+                    Game game = Game.builder().rawgId(rawgId).build();
+                    return gameRepository.save(game);
+                });
     }
 
     public Optional<Game> getGameById(Long id){

@@ -28,6 +28,15 @@ public class UserService {
         return false;
     }
 
+    public Optional<User> login(String email, String password){
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isPresent() && passwordEncoder.matches(password, user.get().getPasswordHash())){
+            return user;
+        }
+        return Optional.empty();
+    }
+
+
     public Optional<User> getUserById(Long id){
         return userRepository.findById(id);
     }

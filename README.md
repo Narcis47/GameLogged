@@ -1,12 +1,36 @@
 # 🎮 GameLogged
 
-A personal game library tracker — log games you're playing, completed, or want to play, and rate them.
+A personal game library tracker — search for games, add them to your library, track your progress and rate them.
 
-Built with Java & Spring Boot on the backend, powered by the [RAWG API](https://rawg.io/apidocs) for game data.
+Built with Java & Spring Boot on the backend and vanilla HTML/CSS/JavaScript on the frontend, powered by the [RAWG API](https://rawg.io/apidocs) for game data.
+
 
 ---
 
-## Tech Stack
+## ✨ Features
+
+- 🔐 User registration and login with BCrypt password hashing
+- 🔍 Search 500,000+ games via RAWG API with cover images
+- 📚 Personal game library per user
+- 🏷️ Track game status: `PLAYING`, `COMPLETED`, `DROPPED`, `WISHLIST`
+- ⭐ Rate games from 1–10
+- 🗑️ Remove games from library
+- 🎨 Dark theme UI with purple accent
+
+---
+
+## 🖥️ Screenshots
+
+### Library
+> Games displayed in a grid with cover images, status badges and ratings
+![My Library](https://i.imgur.com/bQ325A9.png)
+### Search
+> Search any game and add it to your library in one click
+![Search list](https://i.imgur.com/hxBdOX0.png)
+
+---
+
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -14,55 +38,58 @@ Built with Java & Spring Boot on the backend, powered by the [RAWG API](https://
 | Framework | Spring Boot 3.2.5 |
 | Database | PostgreSQL |
 | Security | Spring Security + BCrypt |
-| Game Data | RAWG REST API |
+| HTTP Client | RestTemplate |
+| Game Data API | RAWG REST API |
 | Build Tool | Maven |
+| Frontend | HTML, CSS, JavaScript (Vanilla) |
 
 ---
 
-## Features
-
-- Register and manage users
-- Search games via RAWG API (500k+ games)
-- Add games to your personal library
-- Track status: `PLAYING`, `COMPLETED`, `DROPPED`, `WISHLIST`
-- Rate games from 1–10
-- Write reviews
-
----
-
-## Project Structure
+## 📁 Project Structure
 
 ```
-src/main/java/com/narcis/gamelogged/
-├── controller/        ← REST API endpoints
-│   ├── UserController.java
-│   ├── GameController.java
-│   └── UserGameController.java
-├── service/           ← Business logic
-│   ├── UserService.java
-│   ├── GameService.java
-│   ├── UserGameService.java
-│   └── RawgService.java
-├── repository/        ← Database access
-│   ├── UserRepository.java
-│   ├── GameRepository.java
-│   └── UserGameRepository.java
-├── model/             ← Database entities
-│   ├── User.java
-│   ├── Game.java
-│   └── UserGame.java
-└── dto/               ← Data Transfer Objects
-    └── RawgGameDto.java
+gamelogged/
+├── src/main/java/com/narcis/gamelogged/
+│   ├── controller/
+│   │   ├── UserController.java       ← /api/users
+│   │   ├── GameController.java       ← /api/games
+│   │   └── UserGameController.java   ← /api/library
+│   ├── service/
+│   │   ├── UserService.java
+│   │   ├── GameService.java
+│   │   ├── UserGameService.java
+│   │   └── RawgService.java          ← RAWG API integration
+│   ├── repository/
+│   │   ├── UserRepository.java
+│   │   ├── GameRepository.java
+│   │   └── UserGameRepository.java
+│   ├── model/
+│   │   ├── User.java
+│   │   ├── Game.java
+│   │   └── UserGame.java
+│   ├── dto/
+│   │   ├── RawgGameDto.java
+│   │   └── RawgSearchDto.java
+│   └── SecurityConfig.java
+└── frontend/
+    ├── index.html      ← Game library page
+    ├── login.html      ← Login page
+    ├── register.html   ← Register page
+    ├── style.css       ← Shared styles
+    ├── index.js        ← Library logic
+    ├── login.js        ← Login logic
+    └── register.js     ← Register logic
 ```
 
 ---
 
-## API Endpoints
+## 🔌 API Endpoints
 
 ### Users
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/users/register` | Register a new user |
+| POST | `/api/users/login` | Login |
 | GET | `/api/users` | Get all users |
 | GET | `/api/users/{id}` | Get user by ID |
 
@@ -72,7 +99,9 @@ src/main/java/com/narcis/gamelogged/
 | POST | `/api/games/add` | Add a game by RAWG ID |
 | GET | `/api/games` | Get all games |
 | GET | `/api/games/{id}` | Get game by ID |
+| GET | `/api/games/{id}/rawg` | Get RAWG data for a game |
 | GET | `/api/games/rawg/{rawgId}` | Fetch game details from RAWG |
+| GET | `/api/games/search?query=` | Search games via RAWG |
 
 ### Library
 | Method | Endpoint | Description |
@@ -85,37 +114,8 @@ src/main/java/com/narcis/gamelogged/
 
 ---
 
-## Database Schema
+## 🗄️ Database Schema
 
-```sql
-users        → id, username, email, password_hash, created_at
-games        → id, rawg_id
-user_games   → id, user_id, game_id, status, rating, review, created_at
-```
-
----
-
-## Setup & Installation
-
-### Prerequisites
-- Java 21
-- PostgreSQL
-- Maven
-
-### Steps
-
-**1. Clone the repository**
-```bash
-git clone https://github.com/Narcis47/GameLogged.git
-cd GameLogged
-```
-
-**2. Create the database**
-```sql
-CREATE DATABASE game_library;
-```
-
-**3. Run the schema**
 ```sql
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -142,27 +142,56 @@ CREATE TABLE user_games (
 );
 ```
 
-**4. Set environment variables**
+---
+
+## 🚀 Setup & Installation
+
+### Prerequisites
+- Java 21
+- PostgreSQL
+- Maven
+- RAWG API key (free at [rawg.io/apidocs](https://rawg.io/apidocs))
+
+### Steps
+
+**1. Clone the repository**
 ```bash
+git clone https://github.com/Narcis47/GameLogged.git
+cd GameLogged
+```
+
+**2. Create the PostgreSQL database**
+```sql
+CREATE DATABASE game_library;
+```
+
+**3. Run the schema** (copy the SQL from above into your database client)
+
+**4. Set environment variables**
+
+In IntelliJ → Run/Debug Configurations → Environment Variables:
+```
 DB_USERNAME=your_postgres_username
 DB_PASSWORD=your_postgres_password
 RAWG_API_KEY=your_rawg_api_key
 ```
 
-Get a free RAWG API key at [rawg.io/apidocs](https://rawg.io/apidocs)
-
-**5. Run the application**
+**5. Run the backend**
 ```bash
 ./mvnw spring-boot:run
 ```
 
-The API will be available at `http://localhost:8080`
+**6. Open the frontend**
+
+Open `frontend/index.html` with Live Server (VS Code) or any static file server.
+
+The API runs at `http://localhost:8080`
 
 ---
 
-## Example Requests
+## 📝 Example API Requests
 
-**Register a user**
+**Register**
 ```json
 POST /api/users/register
 {
@@ -172,7 +201,21 @@ POST /api/users/register
 }
 ```
 
-**Add a game to library**
+**Login**
+```json
+POST /api/users/login
+{
+    "email": "narcis@example.com",
+    "password": "securepassword"
+}
+```
+
+**Search games**
+```
+GET /api/games/search?query=witcher
+```
+
+**Add game to library**
 ```json
 POST /api/library/add
 {
@@ -192,6 +235,6 @@ PUT /api/library/1/rating
 
 ---
 
-## Author
+## 👤 Author
 
 **Narcis** — [@Narcis47](https://github.com/Narcis47)

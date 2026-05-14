@@ -7,6 +7,7 @@ import com.narcis.gamelogged.service.RawgService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,16 +40,24 @@ public class GameController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addGame(@RequestBody AddGameRequest request){
-        boolean game = gameService.addGame(request.rawgId());
-        if (game){
-            return ResponseEntity.ok("Game added!");
-        }
-        return ResponseEntity.badRequest().body("Game already added");
+    public ResponseEntity<Game> addGame(@RequestBody AddGameRequest request){
+        return ResponseEntity.ok(gameService.addGame(request.rawgId()));
     }
 
     @GetMapping("/rawg/{rawgId}")
     public ResponseEntity<RawgGameDto> getRawgGame(@PathVariable Integer rawgId){
         return ResponseEntity.ok(rawgService.getGameById(rawgId));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<RawgGameDto>> searchGames(@RequestParam String query) {
+        return ResponseEntity.ok(rawgService.searchGames(query));
+    }
+
+    @GetMapping("/{id}/rawg")
+    public ResponseEntity<RawgGameDto> getRawgDataByGameId(@PathVariable Long id){
+        return gameService.getGameById(id)
+                .map(game -> ResponseEntity.ok(rawgService.getGameById(game.getRawgId())))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

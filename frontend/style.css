@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: #0f0f1a;
+    color: white;
+    min-height: 100vh;
+}
+
+/* ─── AUTH PAGES (login, register) ─── */
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background-color: #1a1a2e;
+    padding: 40px;
+    border-radius: 12px;
+    width: 400px;
+    border: 1px solid #7c3aed;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+/* ─── HEADER ─── */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background-color: #1a1a2e;
+    border-bottom: 1px solid #7c3aed;
+}
+
+.header h1 {
+    color: #7c3aed;
+    margin-bottom: 0;
+}
+
+.header span {
+    color: #888;
+    margin-right: 16px;
+    font-size: 14px;
+}
+
+.header button {
+    width: auto;
+    padding: 8px 16px;
+}
+
+/* ─── CONTAINER ─── */
+
+.container {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ─── SEARCH ─── */
+
+.search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.search-bar input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.search-bar button {
+    width: auto;
+    padding: 12px 24px;
+}
+
+/* ─── TYPOGRAPHY ─── */
+
+h1 {
+    color: #7c3aed;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    color: white;
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+p {
+    color: #888;
+    margin-bottom: 24px;
+}
+
+/* ─── INPUTS ─── */
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    background-color: #0f0f1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #7c3aed;
+}
+
+/* ─── BUTTONS ─── */
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #6d28d9;
+}
+
+/* ─── MESSAGES ─── */
+
+#message {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ─── GAME GRID ─── */
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.game-card {
+    background-color: #1a1a2e;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333;
+    transition: border-color 0.2s;
+}
+
+.game-card:hover {
+    border-color: #7c3aed;
+}
+
+.game-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;  /* ← adaugă asta */
+}
+.game-card-info {
+    padding: 12px;
+}
+
+.game-card-info h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+/* ─── BADGES ─── */
+
+.status-badge {
+    display: inline-block;
+    background-color: #7c3aed;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.rating {
+    color: #fbbf24;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+/* ─── SEARCH RESULTS ─── */
+
+#searchResults {
+    margin-bottom: 32px;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #1a1a2e;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #333;
+}
+
+.search-result-item img {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.search-result-item span {
+    flex: 1;
+    font-size: 14px;
+}
+
+.search-result-item button {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* ─── DELETE BUTTON ─── */
+
+.btn-delete {
+    background-color: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 4px 8px;
+    font-size: 11px;
+    width: auto;
+    margin-top: 4px;
+}
+
+.btn-delete:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+.game-card select {
+    width: 100%;
+    padding: 6px;
+    margin-top: 8px;
+    background-color: #0f0f1a;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.game-card input[type="number"] {
+    width: 100%;
+    padding: 6px;
+    margin-top: 4px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background-color: #7c3aed;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.game-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    background-color: #2d2d44;
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    color: #7c3aed;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}

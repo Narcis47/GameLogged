@@ -12,6 +12,7 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     public record RegisterRequest(String username, String email, String password) {}
+    public record LoginRequest(String email, String password) {}
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -39,4 +40,14 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body("Email already exists!");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody RegisterRequest LoginRequest){
+        Optional<User> user = userService.login(LoginRequest.email(), LoginRequest.password());
+        if (user.isPresent()){
+            return ResponseEntity.ok(user.get());
+        }
+        return ResponseEntity.status(401).body("Invalid credentials!");
+    }
+
 }
