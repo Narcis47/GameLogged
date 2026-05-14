@@ -2,14 +2,14 @@ const userId = localStorage.getItem('userId');
 const username = localStorage.getItem('username');
 
 if(!userId) {
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }
 
 document.getElementById('welcomeUser').textContent = 'Hello, ' + username;
 
 document.getElementById('logoutBtn').addEventListener('click', function() {
     localStorage.clear();
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 });
 
 document.getElementById('searchBtn').addEventListener('click',function(){

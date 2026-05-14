@@ -29,7 +29,7 @@ document.getElementById('loginForm').addEventListener('submit',function(event){
         if(!user) return;  // dacă e eroare, user e undefined
         localStorage.setItem('userId', user.id);
         localStorage.setItem('username', user.username);
-        window.location.href = 'index.html';
+        window.location.href = 'library.html';
     })
     .catch(error => {
         document.getElementById('message').textContent = 'Server error!';
