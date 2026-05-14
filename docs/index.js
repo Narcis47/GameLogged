@@ -1,3 +1,5 @@
+<script src="config.js"></script>
+
 const userId = localStorage.getItem('userId');
 const username = localStorage.getItem('username');
 
@@ -17,7 +19,7 @@ document.getElementById('searchBtn').addEventListener('click',function(){
 
     if(!query) return;
 
-    fetch('http://localhost:8080/api/games/search?query=' + query)
+    fetch('${API_URL}/api/games/search?query=' + query)
     .then(response => response.json())
     .then(games => {
         const searchResults = document.getElementById('searchResults');
@@ -39,17 +41,23 @@ document.getElementById('searchBtn').addEventListener('click',function(){
 
 function addGame(rawgId) {
     // 1. Adaugă jocul în games
-    fetch('http://localhost:8080/api/games/add', {
+    fetch('${API_URL}/api/games/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+                },
         body: JSON.stringify({ rawgId: rawgId })
     })
     .then(response => response.json())
     .then(game => {
         // 2. Adaugă în biblioteca userului
-        return fetch('http://localhost:8080/api/library/add', {
+        return fetch('${API_URL}/api/library/add', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+                },
             body: JSON.stringify({
                 userId: parseInt(userId),
                 gameId: game.id,
@@ -67,7 +75,7 @@ function addGame(rawgId) {
 }
 
 function loadLibrary() {
-    fetch('http://localhost:8080/api/library/' + userId)
+    fetch('${API_URL}/api/library/' + userId)
     .then(response => response.json())
     .then(userGames => {
         const library = document.getElementById('library');
@@ -80,7 +88,7 @@ function loadLibrary() {
         }
 
         userGames.forEach(userGame => {
-            fetch('http://localhost:8080/api/games/' + userGame.gameId + '/rawg')
+            fetch('${API_URL}/api/games/' + userGame.gameId + '/rawg')
             .then(response => response.json())
             .then(rawgGame => {
                 const card = document.createElement('div');
@@ -112,25 +120,31 @@ function loadLibrary() {
 }
 
 function removeGame(id) {
-    fetch('http://localhost:8080/api/library/' + id, {
+    fetch('${API_URL}/api/library/' + id, {
         method: 'DELETE'
     })
     .then(() => loadLibrary());
 }
 
 function updateStatus(id, status) {
-    fetch('http://localhost:8080/api/library/' + id + '/status', {
+    fetch('${API_URL}/api/library/' + id + '/status', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+                },
         body: JSON.stringify({ status: status })
     })
     .then(() => loadLibrary()); // ← adaugă asta
 }
 
 function updateRating(id, rating) {
-    fetch('http://localhost:8080/api/library/' + id + '/rating', {
+    fetch('${API_URL}/api/library/' + id + '/rating', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+                },
         body: JSON.stringify({ rating: parseInt(rating) })
     })
     .then(() => loadLibrary());

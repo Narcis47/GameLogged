@@ -1,3 +1,5 @@
+<script src="config.js"></script>
+
 document.getElementById('loginForm').addEventListener('submit',function(event){
     event.preventDefault()
 
@@ -10,9 +12,11 @@ document.getElementById('loginForm').addEventListener('submit',function(event){
         return;
     }
 
-    fetch('http://localhost:8080/api/users/login', {
+    fetch('${API_URL}/api/users/login', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'},
         body: JSON.stringify({email, password})
     })
     .then(response => {

@@ -1,3 +1,5 @@
+<script src="config.js"></script>
+
 document.getElementById('registerForm').addEventListener('submit',function(event){
     event.preventDefault();
 
@@ -17,9 +19,12 @@ document.getElementById('registerForm').addEventListener('submit',function(event
         return;
     }   
 
-    fetch('http://localhost:8080/api/users/register', {
+    fetch('${API_URL}/api/users/register', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+                },
         body: JSON.stringify({username,email,password})
     })
     .then(response => {
