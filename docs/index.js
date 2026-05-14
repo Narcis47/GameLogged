@@ -1,5 +1,3 @@
-<script src="config.js"></script>
-
 const userId = localStorage.getItem('userId');
 const username = localStorage.getItem('username');
 
@@ -19,7 +17,7 @@ document.getElementById('searchBtn').addEventListener('click',function(){
 
     if(!query) return;
 
-    fetch('${API_URL}/api/games/search?query=' + query)
+    fetch(`${API_URL}/api/games/search?query=${query}`)
     .then(response => response.json())
     .then(games => {
         const searchResults = document.getElementById('searchResults');
@@ -41,7 +39,7 @@ document.getElementById('searchBtn').addEventListener('click',function(){
 
 function addGame(rawgId) {
     // 1. Adaugă jocul în games
-    fetch('${API_URL}/api/games/add', {
+    fetch(`${API_URL}/api/games/add`, {
         method: 'POST',
         headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +50,7 @@ function addGame(rawgId) {
     .then(response => response.json())
     .then(game => {
         // 2. Adaugă în biblioteca userului
-        return fetch('${API_URL}/api/library/add', {
+        return fetch(`${API_URL}/api/library/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +73,7 @@ function addGame(rawgId) {
 }
 
 function loadLibrary() {
-    fetch('${API_URL}/api/library/' + userId)
+    fetch(`${API_URL}/api/library/${userId}`)
     .then(response => response.json())
     .then(userGames => {
         const library = document.getElementById('library');
@@ -88,7 +86,7 @@ function loadLibrary() {
         }
 
         userGames.forEach(userGame => {
-            fetch('${API_URL}/api/games/' + userGame.gameId + '/rawg')
+            fetch(`${API_URL}/api/games/${userGame.gameId}/rawg`)
             .then(response => response.json())
             .then(rawgGame => {
                 const card = document.createElement('div');
@@ -120,14 +118,14 @@ function loadLibrary() {
 }
 
 function removeGame(id) {
-    fetch('${API_URL}/api/library/' + id, {
+    fetch(`${API_URL}/api/library/${id}`, {
         method: 'DELETE'
     })
     .then(() => loadLibrary());
 }
 
 function updateStatus(id, status) {
-    fetch('${API_URL}/api/library/' + id + '/status', {
+    fetch(`${API_URL}/api/library/${id}/status`, {
         method: 'PUT',
         headers: {
                 'Content-Type': 'application/json',
@@ -139,7 +137,7 @@ function updateStatus(id, status) {
 }
 
 function updateRating(id, rating) {
-    fetch('${API_URL}/api/library/' + id + '/rating', {
+    fetch(`${API_URL}/api/library/${id}/rating`, {
         method: 'PUT',
         headers: {
                 'Content-Type': 'application/json',

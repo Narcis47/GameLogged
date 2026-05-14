@@ -1,5 +1,3 @@
-<script src="config.js"></script>
-
 document.getElementById('loginForm').addEventListener('submit',function(event){
     event.preventDefault()
 
@@ -12,7 +10,7 @@ document.getElementById('loginForm').addEventListener('submit',function(event){
         return;
     }
 
-    fetch('${API_URL}/api/users/login', {
+    fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

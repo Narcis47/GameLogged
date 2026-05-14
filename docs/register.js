@@ -1,5 +1,3 @@
-<script src="config.js"></script>
-
 document.getElementById('registerForm').addEventListener('submit',function(event){
     event.preventDefault();
 
@@ -19,7 +17,7 @@ document.getElementById('registerForm').addEventListener('submit',function(event
         return;
     }   
 
-    fetch('${API_URL}/api/users/register', {
+    fetch(`${API_URL}/api/users/register`, {
         method: 'POST',
         headers: {
                 'Content-Type': 'application/json',
