@@ -20,9 +20,7 @@ document.getElementById('registerForm').addEventListener('submit',function(event
     fetch(`${API_URL}/api/users/register`, {
         method: 'POST',
         headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-                },
+                'Content-Type': 'application/json'},
         body: JSON.stringify({username,email,password})
     })
     .then(response => {

@@ -13,8 +13,7 @@ document.getElementById('loginForm').addEventListener('submit',function(event){
     fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true'},
+            'Content-Type': 'application/json'},
         body: JSON.stringify({email, password})
     })
     .then(response => {

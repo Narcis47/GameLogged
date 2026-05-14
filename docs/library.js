@@ -42,9 +42,7 @@ function addGame(rawgId) {
     fetch(`${API_URL}/api/games/add`, {
         method: 'POST',
         headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-                },
+                'Content-Type': 'application/json'},
         body: JSON.stringify({ rawgId: rawgId })
     })
     .then(response => response.json())
@@ -53,9 +51,7 @@ function addGame(rawgId) {
         return fetch(`${API_URL}/api/library/add`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-                },
+                'Content-Type': 'application/json'},
             body: JSON.stringify({
                 userId: parseInt(userId),
                 gameId: game.id,
@@ -128,9 +124,7 @@ function updateStatus(id, status) {
     fetch(`${API_URL}/api/library/${id}/status`, {
         method: 'PUT',
         headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-                },
+                'Content-Type': 'application/json'},
         body: JSON.stringify({ status: status })
     })
     .then(() => loadLibrary()); // ← adaugă asta
@@ -140,9 +134,7 @@ function updateRating(id, rating) {
     fetch(`${API_URL}/api/library/${id}/rating`, {
         method: 'PUT',
         headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true'
-                },
+                'Content-Type': 'application/json'},
         body: JSON.stringify({ rating: parseInt(rating) })
     })
     .then(() => loadLibrary());
