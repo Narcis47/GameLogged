@@ -4,6 +4,7 @@ A personal game library tracker — search for games, add them to your library, 
 
 Built with Java & Spring Boot on the backend and vanilla HTML/CSS/JavaScript on the frontend, powered by the [RAWG API](https://rawg.io/apidocs) for game data.
 
+🌐 **Live Demo:** [narcis47.github.io/GameLogged](https://narcis47.github.io/GameLogged/)
 
 ---
 
@@ -12,18 +13,20 @@ Built with Java & Spring Boot on the backend and vanilla HTML/CSS/JavaScript on 
 - 🔐 User registration and login with BCrypt password hashing
 - 🔍 Search 500,000+ games via RAWG API with cover images
 - 📚 Personal game library per user
-- 🏷️ Track game status: `PLAYING`, `COMPLETED`, `DROPPED`, `WISHLIST`
+- 🏷️ Filter library by status: `ALL`, `PLAYING`, `COMPLETED`, `DROPPED`, `WISHLIST`
 - ⭐ Rate games from 1–10
 - 🗑️ Remove games from library
 - 🎨 Dark theme UI with purple accent
+- 🚀 Deployed on GitHub Pages + self-hosted backend via Serveo tunnel
 
 ---
 
 ## 🖥️ Screenshots
 
 ### Library
-> Games displayed in a grid with cover images, status badges and ratings
+> Games displayed in a grid with cover images, status badges, ratings and filter buttons
 ![My Library](https://i.imgur.com/bQ325A9.png)
+
 ### Search
 > Search any game and add it to your library in one click
 ![Search list](https://i.imgur.com/hxBdOX0.png)
@@ -42,13 +45,15 @@ Built with Java & Spring Boot on the backend and vanilla HTML/CSS/JavaScript on 
 | Game Data API | RAWG REST API |
 | Build Tool | Maven |
 | Frontend | HTML, CSS, JavaScript (Vanilla) |
+| Deploy Frontend | GitHub Pages |
+| Deploy Backend | Self-hosted mini-PC + Serveo tunnel |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-gamelogged/
+GameLogged/
 ├── src/main/java/com/narcis/gamelogged/
 │   ├── controller/
 │   │   ├── UserController.java       ← /api/users
@@ -70,15 +75,17 @@ gamelogged/
 │   ├── dto/
 │   │   ├── RawgGameDto.java
 │   │   └── RawgSearchDto.java
-│   └── SecurityConfig.java
-└── frontend/
-    ├── index.html      ← Game library page
-    ├── login.html      ← Login page
+│   ├── SecurityConfig.java
+│   └── GameloggedApplication.java
+└── docs/                             ← Frontend (GitHub Pages)
+    ├── index.html      ← Login page
     ├── register.html   ← Register page
+    ├── library.html    ← Game library page
     ├── style.css       ← Shared styles
-    ├── index.js        ← Library logic
-    ├── login.js        ← Login logic
-    └── register.js     ← Register logic
+    ├── config.js       ← API URL config
+    ├── index.js        ← Login logic
+    ├── register.js     ← Register logic
+    └── library.js      ← Library logic
 ```
 
 ---
@@ -176,16 +183,50 @@ DB_PASSWORD=your_postgres_password
 RAWG_API_KEY=your_rawg_api_key
 ```
 
+Or in PowerShell:
+```powershell
+$env:DB_USERNAME="your_postgres_username"
+$env:DB_PASSWORD="your_postgres_password"
+$env:RAWG_API_KEY="your_rawg_api_key"
+```
+
 **5. Run the backend**
 ```bash
 ./mvnw spring-boot:run
 ```
 
-**6. Open the frontend**
+**6. Update API URL in frontend**
 
-Open `frontend/index.html` with Live Server (VS Code) or any static file server.
+Edit `docs/config.js`:
+```javascript
+const API_URL = 'http://localhost:8080';
+```
 
-The API runs at `http://localhost:8080`
+**7. Open the frontend**
+
+Open `docs/index.html` with Live Server (VS Code) or any static file server.
+
+---
+
+## 🌐 Deployment
+
+### Frontend — GitHub Pages
+The `docs/` folder is served automatically via GitHub Pages at:
+```
+https://narcis47.github.io/GameLogged/
+```
+
+### Backend — Self-hosted
+The backend runs on a mini-PC exposed via Serveo tunnel:
+```bash
+# Start Spring Boot
+./mvnw spring-boot:run
+
+# Start tunnel
+ssh -R gamelogged:80:localhost:8080 serveo.net
+```
+
+Update `docs/config.js` with the tunnel URL when deploying.
 
 ---
 
@@ -195,9 +236,9 @@ The API runs at `http://localhost:8080`
 ```json
 POST /api/users/register
 {
-    "username": "narcis",
-    "email": "narcis@example.com",
-    "password": "securepassword"
+  "username": "narcis",
+  "email": "narcis@example.com",
+  "password": "securepassword"
 }
 ```
 
@@ -205,8 +246,8 @@ POST /api/users/register
 ```json
 POST /api/users/login
 {
-    "email": "narcis@example.com",
-    "password": "securepassword"
+  "email": "narcis@example.com",
+  "password": "securepassword"
 }
 ```
 
@@ -219,9 +260,9 @@ GET /api/games/search?query=witcher
 ```json
 POST /api/library/add
 {
-    "userId": 1,
-    "gameId": 1,
-    "status": "PLAYING"
+  "userId": 1,
+  "gameId": 1,
+  "status": "PLAYING"
 }
 ```
 
@@ -229,7 +270,7 @@ POST /api/library/add
 ```json
 PUT /api/library/1/rating
 {
-    "rating": 9
+  "rating": 9
 }
 ```
 
