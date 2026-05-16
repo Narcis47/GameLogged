@@ -15,6 +15,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("https://narcis47.github.io");
+        config.addAllowedOrigin("https://gamelogged.serveousercontent.com");
         config.addAllowedOrigin("http://localhost:5500");
         config.addAllowedOrigin("http://127.0.0.1:5500");
         config.addAllowedMethod("*");
