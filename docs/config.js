@@ -1,1 +1,1 @@
-const API_URL = 'https://farms-coaching-cart-experts.trycloudflare.com';
+const API_URL = 'https://gamelogged.serveousercontent.com';
