@@ -24,6 +24,13 @@
         <div id="searchResults"></div>
 
         <h2>My Library</h2>
+        <div class="filter-buttons">
+            <button onclick="filterLibrary('ALL')" class="filter-btn active">All</button>
+            <button onclick="filterLibrary('PLAYING')" class="filter-btn">Playing</button>
+            <button onclick="filterLibrary('COMPLETED')" class="filter-btn">Completed</button>
+            <button onclick="filterLibrary('DROPPED')" class="filter-btn">Dropped</button>
+            <button onclick="filterLibrary('WISHLIST')" class="filter-btn">Wishlist</button>
+        </div>
         <div id="library"></div>
     </div>
 

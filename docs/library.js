@@ -1,5 +1,7 @@
 const userId = localStorage.getItem('userId');
 const username = localStorage.getItem('username');
+let currentFilter = 'ALL';
+let allUserGames = [];
 
 if(!userId) {
     window.location.href = 'index.html';
@@ -38,7 +40,6 @@ document.getElementById('searchBtn').addEventListener('click',function(){
 })
 
 function addGame(rawgId) {
-    // 1. Adaugă jocul în games
     fetch(`${API_URL}/api/games/add`, {
         method: 'POST',
         headers: {
@@ -47,7 +48,6 @@ function addGame(rawgId) {
     })
     .then(response => response.json())
     .then(game => {
-        // 2. Adaugă în biblioteca userului
         return fetch(`${API_URL}/api/library/add`, {
             method: 'POST',
             headers: {
@@ -72,43 +72,48 @@ function loadLibrary() {
     fetch(`${API_URL}/api/library/${userId}`)
     .then(response => response.json())
     .then(userGames => {
-        const library = document.getElementById('library');
-        library.innerHTML = '<div class="game-grid"></div>';
-        const grid = library.querySelector('.game-grid');
+        allUserGames = userGames;
+        renderGames(userGames);
+    });
+}
 
-        if(userGames.length === 0) {
-            library.innerHTML = '<p>No games in your library yet!</p>';
-            return;
-        }
+function renderGames(userGames) {
+    const library = document.getElementById('library');
+    library.innerHTML = '<div class="game-grid"></div>';
+    const grid = library.querySelector('.game-grid');
 
-        userGames.forEach(userGame => {
-            fetch(`${API_URL}/api/games/${userGame.gameId}/rawg`)
-            .then(response => response.json())
-            .then(rawgGame => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.innerHTML = `
-                    <img src="${rawgGame['background_image'] || ''}" 
-                        alt="${rawgGame.name}"
-                        onerror="this.style.display='none'">
-                    <div class="game-card-info">
-                        <h3>${rawgGame.name}</h3>
-                        <span class="status-badge">${userGame.status}</span>
-                        <p class="rating">${userGame.rating ? '⭐ ' + userGame.rating + '/10' : 'No rating'}</p>
-                        <button class="btn-delete" onclick="removeGame(${userGame.id})">Remove</button>
-                    </div>
-                    <select onchange="updateStatus(${userGame.id}, this.value)">
-                        <option ${userGame.status === 'WISHLIST' ? 'selected' : ''}>WISHLIST</option>
-                        <option ${userGame.status === 'PLAYING' ? 'selected' : ''}>PLAYING</option>
-                        <option ${userGame.status === 'COMPLETED' ? 'selected' : ''}>COMPLETED</option>
-                        <option ${userGame.status === 'DROPPED' ? 'selected' : ''}>DROPPED</option>
-                    </select>
-                    <input type="number" min="1" max="10" value="${userGame.rating || ''}" 
-                        placeholder="Rating 1-10"
-                        onchange="updateRating(${userGame.id}, this.value)">
-                `;
-                grid.appendChild(card);
-            });
+    if(userGames.length === 0) {
+        library.innerHTML = '<p>No games found!</p>';
+        return;
+    }
+
+    userGames.forEach(userGame => {
+        fetch(`${API_URL}/api/games/${userGame.gameId}/rawg`)
+        .then(response => response.json())
+        .then(rawgGame => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerHTML = `
+                <img src="${rawgGame['background_image'] || ''}"
+                    alt="${rawgGame.name}"
+                    onerror="this.style.display='none'">
+                <div class="game-card-info">
+                    <h3>${rawgGame.name}</h3>
+                    <span class="status-badge">${userGame.status}</span>
+                    <p class="rating">${userGame.rating ? '⭐ ' + userGame.rating + '/10' : 'No rating'}</p>
+                    <button class="btn-delete" onclick="removeGame(${userGame.id})">Remove</button>
+                </div>
+                <select onchange="updateStatus(${userGame.id}, this.value)">
+                    <option ${userGame.status === 'WISHLIST' ? 'selected' : ''}>WISHLIST</option>
+                    <option ${userGame.status === 'PLAYING' ? 'selected' : ''}>PLAYING</option>
+                    <option ${userGame.status === 'COMPLETED' ? 'selected' : ''}>COMPLETED</option>
+                    <option ${userGame.status === 'DROPPED' ? 'selected' : ''}>DROPPED</option>
+                </select>
+                <input type="number" min="1" max="10" value="${userGame.rating || ''}"
+                    placeholder="Rating 1-10"
+                    onchange="updateRating(${userGame.id}, this.value)">
+            `;
+            grid.appendChild(card);
         });
     });
 }
@@ -127,7 +132,7 @@ function updateStatus(id, status) {
                 'Content-Type': 'application/json'},
         body: JSON.stringify({ status: status })
     })
-    .then(() => loadLibrary()); // ← adaugă asta
+    .then(() => loadLibrary());
 }
 
 function updateRating(id, rating) {
@@ -145,6 +150,24 @@ function showToast(message) {
     toast.textContent = message;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function filterLibrary(status) {
+    currentFilter = status;
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.textContent.toUpperCase() === status ||
+           (status === 'ALL' && btn.textContent === 'All')) {
+            btn.classList.add('active');
+        }
+    });
+
+    const filtered = status === 'ALL'
+        ? allUserGames
+        : allUserGames.filter(g => g.status === status);
+
+    renderGames(filtered);
 }
 
 loadLibrary();

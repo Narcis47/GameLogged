@@ -311,3 +311,23 @@ button:hover {
 .auth-link:hover {
     text-decoration: underline;
 }
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    width: auto;
+    padding: 6px 16px;
+    background-color: #1a1a2e;
+    border: 1px solid #333;
+    font-size: 13px;
+}
+
+.filter-btn.active {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}

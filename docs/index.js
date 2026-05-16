@@ -25,7 +25,7 @@ document.getElementById('loginForm').addEventListener('submit',function(event){
         return response.json();
     })
     .then(user => {
-        if(!user) return;  // dacă e eroare, user e undefined
+        if(!user) return;
         localStorage.setItem('userId', user.id);
         localStorage.setItem('username', user.username);
         window.location.href = 'library.html';

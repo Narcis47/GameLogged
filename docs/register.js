@@ -8,7 +8,7 @@ document.getElementById('registerForm').addEventListener('submit',function(event
     if(!username || !email || !password) {
         document.getElementById('message').textContent = 'All fields are required!';
         document.getElementById('message').style.color = 'red';
-        return;  // oprește funcția aici
+        return;
     }
 
     if(password.length < 6) {
